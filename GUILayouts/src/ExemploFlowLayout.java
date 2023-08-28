@@ -17,13 +17,13 @@ public class ExemploFlowLayout {
         JButton enviar = new JButton("Enviar");
         janela1.add(enviar);
         enviar.addActionListener(e ->{
+            int a=1;
             int valor = Integer.parseInt(campo.getText());
             for (int i = 0; i < valor; i++) {
-                janela1.add(new JButton(""+i+1));
+                janela1.add(new JButton(" "+i+a));
                 janela1.pack();
             }
         });
-
         //setar os elementos da janela
         janela1.setDefaultCloseOperation(1);
         janela1.setVisible(true);
