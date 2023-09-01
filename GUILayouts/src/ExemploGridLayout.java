@@ -8,6 +8,7 @@ import javax.swing.JTextField;
 public class ExemploGridLayout {
     public ExemploGridLayout() {
         JFrame janela1 = new JFrame("Exemplo GridLayout");
+        //this.add(new JLabel("Calculadora Padrão"));
         JPanel painel1 = new JPanel();
         JPanel painel2 = new JPanel();
         GridLayout grid = new GridLayout(4, 4, 5, 5);

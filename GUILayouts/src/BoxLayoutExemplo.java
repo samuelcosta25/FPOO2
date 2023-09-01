@@ -24,9 +24,10 @@ public BoxLayoutExemplo() {
         painel2.add(new JButton(""+i+(1)));
     }
     //set dos frames 
-    this.setDefaultCloseOperation(1);
-    this.setVisible(true);
+    this.setDefaultCloseOperation(2);
     this.pack();
+    this.setVisible(true);
+    
     
 }
 }

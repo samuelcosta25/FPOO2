@@ -15,7 +15,7 @@ public class App {
                 break;
             case 4:
                 new BoxLayoutExemplo();
-            break;
+                break;
             default:
                 break;
         }
