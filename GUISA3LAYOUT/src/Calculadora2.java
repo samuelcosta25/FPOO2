@@ -9,65 +9,42 @@ public class Calculadora2 extends JPanel implements ActionListener {
 
     public Calculadora2() {
         // Layout
-        setLayout(new GridLayout(7, 2));
+        setLayout(new GridLayout(6, 2, 10, 10)); // Adicionando espaçamento entre os componentes
 
-        // Rótulos
-        JLabel eurLabel = new JLabel("Euro (EUR):");
-        JLabel usdLabel = new JLabel("Dólar (USD):");
-        JLabel gbpLabel = new JLabel("Libra (GBP):");
-        JLabel btcLabel = new JLabel("Bitcoin (BTC):");
-        JLabel brlLabel = new JLabel("Real (BRL):");
-
-        // Campos de texto
-        eurTextField = new JTextField();
-        usdTextField = new JTextField();
-        gbpTextField = new JTextField();
-        btcTextField = new JTextField();
-        brlTextField = new JTextField();
+        // Adicionando os rótulos e campos de texto
+        adicionarComponente("Euro (EUR):", eurTextField = new JTextField());
+        adicionarComponente("Dólar (USD):", usdTextField = new JTextField());
+        adicionarComponente("Libra (GBP):", gbpTextField = new JTextField());
+        adicionarComponente("Bitcoin (BTC):", btcTextField = new JTextField());
+        adicionarComponente("Real (BRL):", brlTextField = new JTextField());
 
         // Botão de conversão
         JButton converterButton = new JButton("Converter");
-        converterButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                converterMoedas();
-            }
-        });
+        converterButton.addActionListener(e -> converterMoedas());
 
         // Botão de limpar
         JButton limparButton = new JButton("Limpar");
-        limparButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                eurTextField.setText("");
-                usdTextField.setText("");
-                gbpTextField.setText("");
-                btcTextField.setText("");
-                brlTextField.setText("");
-            }
+        limparButton.addActionListener(e -> {
+            eurTextField.setText("");
+            usdTextField.setText("");
+            gbpTextField.setText("");
+            btcTextField.setText("");
+            brlTextField.setText("");
         });
 
-        // Adiciona os componentes ao painel
-        add(eurLabel);
-        add(eurTextField);
-        add(usdLabel);
-        add(usdTextField);
-        add(gbpLabel);
-        add(gbpTextField);
-        add(btcLabel);
-        add(btcTextField);
-        add(brlLabel);
-        add(brlTextField);
-        add(converterButton); // Adiciona o botão de conversão
-        add(limparButton); // Adiciona o botão de limpar
-
-        // Adiciona um ActionListener aos campos de texto
-        eurTextField.addActionListener(this);
-        usdTextField.addActionListener(this);
-        gbpTextField.addActionListener(this);
-        btcTextField.addActionListener(this);
-        brlTextField.addActionListener(this);
+        // Adiciona os botões ao painel
+        add(converterButton);
+        add(limparButton);
     }
+
+    private void adicionarComponente(String label, JComponent componente) {
+        JLabel rotulo = new JLabel(label);
+        add(rotulo);
+        add(componente);
+    }
+
+
+
 
     @Override
     public void actionPerformed(ActionEvent e) {

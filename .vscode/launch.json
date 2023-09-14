@@ -6,6 +6,34 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Calculadora3",
+            "request": "launch",
+            "mainClass": "Calculadora3",
+            "projectName": "FPOO2_c2071b8b"
+        },
+        {
+            "type": "java",
+            "name": "Calculadora2",
+            "request": "launch",
+            "mainClass": "Calculadora2",
+            "projectName": "FPOO2_c2071b8b"
+        },
+        {
+            "type": "java",
+            "name": "Calculadora1",
+            "request": "launch",
+            "mainClass": "Calculadora1",
+            "projectName": "FPOO2_c2071b8b"
+        },
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "App",
+            "projectName": "FPOO2_c2071b8b"
+        },
+        {
+            "type": "java",
             "name": "Calculadora1",
             "request": "launch",
             "mainClass": "Calculadora1",

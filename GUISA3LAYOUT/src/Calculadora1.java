@@ -1,109 +1,51 @@
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
 
-public class Calculadora1 extends JPanel implements ActionListener {
-
-    private JTextField visorOperacao, visorResultado;
-    private JButton[] botoes = new JButton[16];
-    private String[] labels = {
-        "7", "8", "9", "/",
-        "4", "5", "6", "*",
-        "1", "2", "3", "-",
-        "0", "C", "=", "+"
-    };
-
-    private double num1, num2, resultado;
-    private char operacao;
-    private String operacaoAtual = "";
-
+public class Calculadora1 extends JPanel  {
+    /**
+     * 
+     */
     public Calculadora1() {
-        setLayout(new BorderLayout());
-
-        visorOperacao = new JTextField("", 20);
-        visorOperacao.setEditable(false);
-        visorResultado = new JTextField("", 20);
-        visorResultado.setColumns(20);
-
-        add(visorOperacao, BorderLayout.NORTH);
-        add(visorResultado, BorderLayout.CENTER);
-
-        JPanel painelBotoes = new JPanel();
-        painelBotoes.setLayout(new GridLayout(4, 4, 5, 5));
-
-        for (int i = 0; i < 16; i++) {
-            botoes[i] = new JButton(labels[i]);
-            botoes[i].addActionListener(this);
-            painelBotoes.add(botoes[i]);
+        // cria nova janela
+        JPanel janelaTexto = new JPanel();
+        // cria painel para texto
+        JPanel janelaBotoes = new JPanel();
+        // cria janela para botoes
+        JPanel painelEquacao = new JPanel();
+        // painel de texto da equação
+        JPanel painelResultado = new JPanel();
+        // painel de texto de resultado
+        BorderLayout border = new BorderLayout();
+        // cria Layout Border
+        this.setLayout(border);
+        BoxLayout box = new BoxLayout(janelaTexto, 1);
+        janelaTexto.setLayout(box);
+        // Seta "Border" como Layout
+        this.add(janelaTexto, BorderLayout.NORTH);
+        janelaTexto.add(painelEquacao);
+        janelaTexto.add(painelResultado);
+        this.add(janelaBotoes, BorderLayout.CENTER);
+        // cria Textfield
+        JTextField textEquacao = new JTextField(15);
+        painelEquacao.add(textEquacao);
+        textEquacao.setEditable(false);
+        textEquacao.setBackground(Color.white);
+        // adiciona o textField no painelT
+        JTextField textResultado = new JTextField(15);
+        painelResultado.add(textResultado);
+        // adiciona o textField no PainelR
+        GridLayout grid = new GridLayout(4, 4, 2, 2);
+        janelaBotoes.setLayout(grid);
+        String botoes[] = { "C", "1", "2", "3", "+", "4", "5", "6", "-", "7", "8", "9", "*", "/", "0", "=" };
+        for (int i = 0; i < botoes.length; i++) {
+            janelaBotoes.add(new JButton(botoes[i]));
         }
+        this.setVisible(true);
 
-        add(painelBotoes, BorderLayout.SOUTH);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        String command = e.getActionCommand();
-        if (command.matches("[0-9]")) {
-            operacaoAtual += command;
-            visorResultado.setText(operacaoAtual);
-        } else if (command.equals("+") || command.equals("-") || command.equals("*") || command.equals("/")) {
-            if (!operacaoAtual.isEmpty()) {
-                if (resultado != 0) {
-                    num1 = resultado;
-                } else {
-                    num1 = Double.parseDouble(operacaoAtual);
-                }
-                operacao = command.charAt(0);
-                operacaoAtual = "";
-                visorOperacao.setText(num1 + " " + operacao);
-                visorResultado.setText("");
-            }
-        } else if (command.equals("=")) {
-            if (!operacaoAtual.isEmpty()) {
-                num2 = Double.parseDouble(operacaoAtual);
-                switch (operacao) {
-                    case '+':
-                        resultado = num1 + num2;
-                        break;
-                    case '-':
-                        resultado = num1 - num2;
-                        break;
-                    case '*':
-                        resultado = num1 * num2;
-                        break;
-                    case '/':
-                        resultado = num1 / num2;
-                        break;
-                }
-                visorOperacao.setText(num1 + " " + operacao + " " + num2 + " =");
-                visorResultado.setText("" + resultado);
-                operacaoAtual = "";
-            }
-        } else if (command.equals("C")) {
-            operacaoAtual = "";
-            visorOperacao.setText("");
-            visorResultado.setText("");
-            num1 = num2 = resultado = 0;
-            operacao = ' ';
-        }
-
-        if (!command.equals("=") && !command.equals("C") && !command.matches("[0-9]")) {
-            if (resultado != 0) {
-                num1 = resultado;
-                operacaoAtual = "";
-                visorOperacao.setText(num1 + " " + operacao);
-                visorResultado.setText("");
-                resultado = 0;
-            }
-        }
-    }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Calculadora1");
-        Calculadora1 calculadora = new Calculadora1();
-        frame.add(calculadora);
-        frame.setSize(300, 400);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-    }
+        
+   
+}
 }

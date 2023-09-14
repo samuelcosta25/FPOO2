@@ -1,16 +1,13 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.GroupLayout.*;
 
 public class Calculadora3 extends JPanel implements ActionListener {
 
     private JTextField bitTextField, byteTextField, kilobyteTextField, megabyteTextField, gigabyteTextField;
 
     public Calculadora3() {
-        // Layout
-        setLayout(new GridLayout(6, 2));
-
         // Rótulos
         JLabel bitLabel = new JLabel("Bits:");
         JLabel byteLabel = new JLabel("Bytes:");
@@ -47,19 +44,58 @@ public class Calculadora3 extends JPanel implements ActionListener {
             }
         });
 
-        // Adiciona os componentes ao painel
-        add(bitLabel);
-        add(bitTextField);
-        add(byteLabel);
-        add(byteTextField);
-        add(kilobyteLabel);
-        add(kilobyteTextField);
-        add(megabyteLabel);
-        add(megabyteTextField);
-        add(gigabyteLabel);
-        add(gigabyteTextField);
-        add(converterButton);
-        add(limparButton);
+        // Configuração do GroupLayout
+        GroupLayout layout = new GroupLayout(this);
+        setLayout(layout);
+
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+
+        GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
+        hGroup.addGroup(layout.createParallelGroup()
+                .addComponent(bitLabel)
+                .addComponent(byteLabel)
+                .addComponent(kilobyteLabel)
+                .addComponent(megabyteLabel)
+                .addComponent(gigabyteLabel)
+                .addComponent(converterButton)
+        );
+        hGroup.addGroup(layout.createParallelGroup()
+                .addComponent(bitTextField)
+                .addComponent(byteTextField)
+                .addComponent(kilobyteTextField)
+                .addComponent(megabyteTextField)
+                .addComponent(gigabyteTextField)
+                .addComponent(limparButton)
+        );
+        layout.setHorizontalGroup(hGroup);
+
+        GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
+        vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+                .addComponent(bitLabel)
+                .addComponent(bitTextField)
+        );
+        vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+                .addComponent(byteLabel)
+                .addComponent(byteTextField)
+        );
+        vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+                .addComponent(kilobyteLabel)
+                .addComponent(kilobyteTextField)
+        );
+        vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+                .addComponent(megabyteLabel)
+                .addComponent(megabyteTextField)
+        );
+        vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+                .addComponent(gigabyteLabel)
+                .addComponent(gigabyteTextField)
+        );
+        vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+                .addComponent(converterButton)
+                .addComponent(limparButton)
+        );
+        layout.setVerticalGroup(vGroup);
 
         // Adiciona um ActionListener aos campos de texto
         bitTextField.addActionListener(this);
