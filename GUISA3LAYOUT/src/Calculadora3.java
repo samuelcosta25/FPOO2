@@ -8,14 +8,14 @@ public class Calculadora3 extends JPanel implements ActionListener {
     private JTextField bitTextField, byteTextField, kilobyteTextField, megabyteTextField, gigabyteTextField;
 
     public Calculadora3() {
-        // Rótulos
+        // Rótulos de memoria
         JLabel bitLabel = new JLabel("Bits:");
         JLabel byteLabel = new JLabel("Bytes:");
         JLabel kilobyteLabel = new JLabel("Kilobytes:");
         JLabel megabyteLabel = new JLabel("Megabytes:");
         JLabel gigabyteLabel = new JLabel("Gigabytes:");
 
-        // Campos de texto
+        // Campos de texto, dados a serem inseridos
         bitTextField = new JTextField();
         byteTextField = new JTextField();
         kilobyteTextField = new JTextField();
@@ -58,43 +58,35 @@ public class Calculadora3 extends JPanel implements ActionListener {
                 .addComponent(kilobyteLabel)
                 .addComponent(megabyteLabel)
                 .addComponent(gigabyteLabel)
-                .addComponent(converterButton)
-        );
+                .addComponent(converterButton));
         hGroup.addGroup(layout.createParallelGroup()
                 .addComponent(bitTextField)
                 .addComponent(byteTextField)
                 .addComponent(kilobyteTextField)
                 .addComponent(megabyteTextField)
                 .addComponent(gigabyteTextField)
-                .addComponent(limparButton)
-        );
+                .addComponent(limparButton));
         layout.setHorizontalGroup(hGroup);
 
         GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
         vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
                 .addComponent(bitLabel)
-                .addComponent(bitTextField)
-        );
+                .addComponent(bitTextField));
         vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
                 .addComponent(byteLabel)
-                .addComponent(byteTextField)
-        );
+                .addComponent(byteTextField));
         vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
                 .addComponent(kilobyteLabel)
-                .addComponent(kilobyteTextField)
-        );
+                .addComponent(kilobyteTextField));
         vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
                 .addComponent(megabyteLabel)
-                .addComponent(megabyteTextField)
-        );
+                .addComponent(megabyteTextField));
         vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
                 .addComponent(gigabyteLabel)
-                .addComponent(gigabyteTextField)
-        );
+                .addComponent(gigabyteTextField));
         vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
                 .addComponent(converterButton)
-                .addComponent(limparButton)
-        );
+                .addComponent(limparButton));
         layout.setVerticalGroup(vGroup);
 
         // Adiciona um ActionListener aos campos de texto
@@ -148,12 +140,4 @@ public class Calculadora3 extends JPanel implements ActionListener {
         }
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Conversor de Unidades de Memória");
-        Calculadora3 calculadora = new Calculadora3();
-        frame.add(calculadora);
-        frame.setSize(300, 250);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-    }
 }

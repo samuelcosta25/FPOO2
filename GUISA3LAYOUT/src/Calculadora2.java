@@ -8,19 +8,21 @@ public class Calculadora2 extends JPanel implements ActionListener {
     private JTextField eurTextField, usdTextField, gbpTextField, btcTextField, brlTextField;
 
     public Calculadora2() {
-        // Layout
-        setLayout(new GridLayout(6, 2, 10, 10)); // Adicionando espaçamento entre os componentes
+        // Layout do painel principal (FlowLayout)
+        setLayout(new FlowLayout());
 
-        // Adicionando os rótulos e campos de texto
-        adicionarComponente("Euro (EUR):", eurTextField = new JTextField());
-        adicionarComponente("Dólar (USD):", usdTextField = new JTextField());
-        adicionarComponente("Libra (GBP):", gbpTextField = new JTextField());
-        adicionarComponente("Bitcoin (BTC):", btcTextField = new JTextField());
-        adicionarComponente("Real (BRL):", brlTextField = new JTextField());
+        // Painel interno com GridLayout
+        JPanel gridPanel = new JPanel(new GridLayout(5, 2, 10, 10)); // Adicionando espaçamento entre os componentes
 
-        // Botão de conversão
-        JButton converterButton = new JButton("Converter");
-        converterButton.addActionListener(e -> converterMoedas());
+        // Adicionando os rótulos e campos de texto no painel interno (GridLayout)
+        adicionarComponente(gridPanel, "Euro (EUR):", eurTextField = new JTextField());
+        adicionarComponente(gridPanel, "Dólar (USD):", usdTextField = new JTextField());
+        adicionarComponente(gridPanel, "Libra (GBP):", gbpTextField = new JTextField());
+        adicionarComponente(gridPanel, "Bitcoin (BTC):", btcTextField = new JTextField());
+        adicionarComponente(gridPanel, "Real (BRL):", brlTextField = new JTextField());
+
+        // Adiciona o painel interno (GridLayout) ao painel principal (FlowLayout)
+        add(gridPanel);
 
         // Botão de limpar
         JButton limparButton = new JButton("Limpar");
@@ -32,19 +34,22 @@ public class Calculadora2 extends JPanel implements ActionListener {
             brlTextField.setText("");
         });
 
-        // Adiciona os botões ao painel
-        add(converterButton);
+        // Adiciona o botão de limpar ao painel principal (FlowLayout)
         add(limparButton);
+
+        // Botão de conversão
+        JButton converterButton = new JButton("Converter");
+        converterButton.addActionListener(e -> converterMoedas());
+
+        // Adiciona o botão de conversão ao painel principal (FlowLayout)
+        add(converterButton);
     }
 
-    private void adicionarComponente(String label, JComponent componente) {
+    private void adicionarComponente(JPanel panel, String label, JComponent componente) {
         JLabel rotulo = new JLabel(label);
-        add(rotulo);
-        add(componente);
+        panel.add(rotulo);
+        panel.add(componente);
     }
-
-
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -89,12 +94,5 @@ public class Calculadora2 extends JPanel implements ActionListener {
         }
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Conversor de Moedas");
-        Calculadora2 calculadora = new Calculadora2();
-        frame.add(calculadora);
-        frame.setSize(300, 250);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-    }
+  
 }

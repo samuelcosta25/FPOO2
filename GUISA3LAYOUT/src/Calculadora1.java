@@ -4,7 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.awt.*;
 
-public class Calculadora1 extends JPanel  {
+public class Calculadora1 extends JPanel {
     /**
      * 
      */
@@ -35,7 +35,9 @@ public class Calculadora1 extends JPanel  {
         textEquacao.setBackground(Color.white);
         // adiciona o textField no painelT
         JTextField textResultado = new JTextField(15);
+        textResultado.setEditable(false);
         painelResultado.add(textResultado);
+        
         // adiciona o textField no PainelR
         GridLayout grid = new GridLayout(4, 4, 2, 2);
         janelaBotoes.setLayout(grid);
@@ -43,9 +45,7 @@ public class Calculadora1 extends JPanel  {
         for (int i = 0; i < botoes.length; i++) {
             janelaBotoes.add(new JButton(botoes[i]));
         }
-        this.setVisible(true);
+        this.setVisible(true); // Deixa o Painel visível
 
-        
-   
-}
+    }
 }
