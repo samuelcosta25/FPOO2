@@ -9,6 +9,8 @@ TIPOS DE GERENCIADORES DE LAYOUT
  
 FlowLayout
 
+
+
 Este gerenciador de layout organiza os componentes em uma única linha, na ordem em que foram adicionados ao contêiner. Quando a linha está cheia, os componentes são colocados na próxima linha.
 
 BorderLayout

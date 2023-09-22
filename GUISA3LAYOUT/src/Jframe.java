@@ -8,4 +8,7 @@ public class Jframe extends JFrame {
         this.setBounds(500, 250, 400, 400);
         this.setVisible(true);
     }
+
+    public Jframe(String string) {
+    }
 }
