@@ -1,12 +1,12 @@
-import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.awt.*;
 
-public class ExercicioCardLayout extends JFrame{
+public class Exercicios extends JFrame {
     //construtor
-    public ExercicioCardLayout() {
+        public Exercicios() {
         super("Exercicio CardLayout");
         JPanel painel1 = new JPanel();//principal
         //elemento de seleção dos Cards JComboBox
@@ -43,3 +43,4 @@ public class ExercicioCardLayout extends JFrame{
         });
     }
 }
+
