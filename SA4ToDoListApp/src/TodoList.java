@@ -1,15 +1,14 @@
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-
 import java.awt.*;
 
 public class TodoList extends JFrame {
@@ -25,12 +24,25 @@ public class TodoList extends JFrame {
     private JButton clearCompletedButton;
     private List<Task> tasks;
 
+    private void confirmarFechamento() {
+        int resultado = JOptionPane.showConfirmDialog(
+                this,
+                "Deseja realmente fechar a aplicação?",
+                "Confirmar Fechamento",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (resultado == JOptionPane.YES_OPTION) {
+            this.dispose(); // Fecha a janela
+        }
+    }
+
     // CONSTRUTOR
     public TodoList() {
         // Configuração da janela principal
         super("To-Do List App");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(400, 300);
+        this.setBounds(450, 150, 450, 300);
 
         // Inicializa o painel principal
         mainPanel = new JPanel();
@@ -47,7 +59,7 @@ public class TodoList extends JFrame {
         deleteButton = new JButton("Excluir");
         markDoneButton = new JButton("Concluir");
         filterComboBox = new JComboBox<>(new String[] { "Todas", "Ativas",
-                "Concluídas" });
+                "Concluídas", "Excluídas" });
         clearCompletedButton = new JButton("Limpar Concluídas");
 
         // Configuração do painel de entrada
@@ -72,6 +84,12 @@ public class TodoList extends JFrame {
         this.setVisible(true);
 
         // Criar os Tratamentos de Eventos - Listener e eventos
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                confirmarFechamento();
+            }
+        });
     }
 
     // Criar os Métodos(CRUD)
@@ -104,3 +122,46 @@ public class TodoList extends JFrame {
             updateTaskList();
         }
     }
+
+    private void filterTasks() {
+
+        // Filtra as tasks com base na seleção do JComboBox
+        String filter = (String) filterComboBox.getSelectedItem();
+        listModel.clear();
+        for (Task task : tasks) {
+            if (filter.equals("Todas") || (filter.equals("Ativas") &&
+                    !task.isDone()) || (filter.equals("Concluídas") && task.isDone()) || (filter.equals("Excluídas") && task.isRemoved())) {
+                listModel.addElement(task.getDescription());
+            }
+        }
+    }
+
+    private void clearCompletedTasks() {
+        // Limpa todas as tasks concluídas da lista
+        List<Task> completedTasks = new ArrayList<>();
+        for (Task task : tasks) {
+            if (task.isDone()) {
+                completedTasks.add(task);
+            }
+        }
+        tasks.removeAll(completedTasks);
+        updateTaskList();
+    }
+   
+
+    private void updateTaskList() {
+        // Atualiza a lista de tasks exibida na GUI
+        listModel.clear();
+        for (Task task : tasks) {
+            listModel.addElement(task.getDescription() + (task.isDone() ?
+
+                    " (Concluída)" : ""));
+
+        }
+    }
+
+    public void run() {
+        // Exibe a janela
+        this.setVisible(true);
+    }
+}
