@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "TodoListApp",
+            "request": "launch",
+            "mainClass": "TodoListApp",
+            "projectName": "FPOO2_c2071b8b"
+        },
+        {
+            "type": "java",
             "name": "Calculadora3",
             "request": "launch",
             "mainClass": "Calculadora3",
