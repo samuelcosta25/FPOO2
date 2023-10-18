@@ -21,30 +21,34 @@ public class TodoListApp extends JFrame {
     private JComboBox<String> filterComboBox;
     private JButton clearCompletedButton;
     private List<Task> tasks;
+    private List<Task> filteredTasks;
 
     public TodoListApp() {
+
+        // CONFIGURAÇÃO DE JANELA
         super("TodoListApp");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setBounds(450, 150, 450, 300);
 
+        // CRIAÇÃO DO PAINEL
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
 
+        // DECLARAÇÃO DE BOTÕES, LISTAS E AREAS DE TEXTO
         tasks = new ArrayList<>();
         listModel = new DefaultListModel<>();
         taskList = new JList<>(listModel);
-
         taskInputField = new JTextField();
         addButton = new JButton("Adicionar");
         deleteButton = new JButton("Excluir");
         markDoneButton = new JButton("Concluir");
-        filterComboBox = new JComboBox<>(new String[] { "Todas", "Ativas", "Concluídas", "Excluídas" });
+        filterComboBox = new JComboBox<>(new String[] { "Todas", "Ativas", "Concluídas" });
         clearCompletedButton = new JButton("Limpar Concluídas");
 
+        // ADIÇÃO E POSICIONAMENTO DOS BOTÕES E PAINEIS
         JPanel inputPanel = new JPanel(new BorderLayout());
         inputPanel.add(taskInputField, BorderLayout.CENTER);
         inputPanel.add(addButton, BorderLayout.EAST);
-
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         buttonPanel.add(deleteButton);
         buttonPanel.add(markDoneButton);
@@ -117,8 +121,9 @@ public class TodoListApp extends JFrame {
                         int sourceIndex = Integer.parseInt(draggedIndex);
                         if (sourceIndex >= 0 && sourceIndex < tasks.size()) {
                             // Confirmação com JOptionPane
-                            int resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir esta tarefa?", "Confirmação",
-                                JOptionPane.YES_NO_OPTION);
+                            int resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir esta tarefa?",
+                                    "Confirmação",
+                                    JOptionPane.YES_NO_OPTION);
 
                             if (resposta == JOptionPane.YES_OPTION) {
                                 Task task = tasks.remove(sourceIndex);
@@ -136,6 +141,7 @@ public class TodoListApp extends JFrame {
             }
         });
 
+        // MARCAR TAREFA COMO CONCLUÍDA
         markDoneButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -143,140 +149,188 @@ public class TodoListApp extends JFrame {
             }
         });
         // Adiciona um KeyListener para a lista de tarefas
-    taskList.addKeyListener(new KeyAdapter() {
-        @Override
-        public void keyPressed(KeyEvent e) { 
-            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                markTaskDone();
+        taskList.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    markTaskDone();
+                }
             }
-        }
-});
+        });
 
- 
+        // LIMPAR TODAS AS TAREFAS CONCLUÍDAS
+        clearCompletedButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                clearCompletedTasks();
+            }
+        });
+
+        // FILTRAR TAREFAS PELO COMBOBOX
+        filterComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                filterTasks();
+            }
+        });
 
     }
-    
-    //METODO ADICIONAR
+
+    // METODO ADICIONAR
     private void addTask() {
-        String taskDescription = taskInputField.getText().trim();
-        if (!taskDescription.isEmpty()) {
-            Task newTask = new Task(taskDescription);
-            tasks.add(newTask);
-            updateTaskList();
-            taskInputField.setText("");
+        try {
+            String taskDescription = taskInputField.getText().trim();
+            if (!taskDescription.isEmpty()) {
+                Task newTask = new Task(taskDescription);
+                tasks.add(newTask);
+                updateTaskList();
+                taskInputField.setText("");
+            } else {
+                JOptionPane.showMessageDialog(this, "Digite uma descrição para a tarefa.", "Erro",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Ocorreu um erro ao adicionar a tarefa.", "Erro",
+                    JOptionPane.ERROR_MESSAGE);
         }
-
     }
 
-    //METODO EXCLUIR
     private void deleteTask() {
         int selectedIndex = taskList.getSelectedIndex();
-        if (selectedIndex >= 0 && selectedIndex < tasks.size()) {
-            int resposta = JOptionPane.showConfirmDialog(this, "Deseja realmente excluir esta tarefa?", "Confirmação",
-                    JOptionPane.YES_NO_OPTION);
-            if (resposta == JOptionPane.YES_OPTION) {
-                tasks.remove(selectedIndex);
-                updateTaskList();
-            }
-        }
-    }
-//METODO EXCLUIR VIA DRAG AND DROP
-class TaskTransferHandler extends TransferHandler {
-    @Override
-    public int getSourceActions(JComponent c) {
-        return MOVE;
-    }
-
-    @Override
-    protected Transferable createTransferable(JComponent c) {
-        JList<String> list = (JList<String>) c;
-        int index = list.getSelectedIndex();
-        return new StringSelection(Integer.toString(index));
-    }
-
-    @Override
-    public boolean canImport(TransferHandler.TransferSupport info) {
-        return info.isDataFlavorSupported(DataFlavor.stringFlavor);
-    }
-
-    @Override
-    public boolean importData(TransferHandler.TransferSupport info) {
-        if (!canImport(info)) {
-            return false;
-        }
-
-        JList.DropLocation dl = (JList.DropLocation) info.getDropLocation();
-        int index = dl.getIndex();
-
         try {
-            String draggedIndex = (String) info.getTransferable().getTransferData(DataFlavor.stringFlavor);
-            int sourceIndex = Integer.parseInt(draggedIndex);
+            if (selectedIndex >= 0 && selectedIndex < tasks.size()) {
+                int resposta = JOptionPane.showConfirmDialog(this, "Deseja realmente excluir esta tarefa?",
+                        "Confirmação",
+                        JOptionPane.YES_NO_OPTION);
+                if (resposta == JOptionPane.YES_OPTION) {
+                    tasks.remove(selectedIndex);
+                    updateTaskList();
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Selecione uma tarefa para excluir.", "Erro",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Ocorreu um erro ao excluir a tarefa.", "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
-            if (index == -1) {
-                // Não foi solto sobre um item, portanto não faz nada
+    // METODO EXCLUIR VIA DRAG AND DROP
+    class TaskTransferHandler extends TransferHandler {
+        @Override
+        public int getSourceActions(JComponent c) {
+            return MOVE;
+        }
+
+        @Override
+        protected Transferable createTransferable(JComponent c) {
+            JList<String> list = (JList<String>) c;
+            int index = list.getSelectedIndex();
+            return new StringSelection(Integer.toString(index));
+        }
+
+        @Override
+        public boolean canImport(TransferHandler.TransferSupport info) {
+            return info.isDataFlavorSupported(DataFlavor.stringFlavor);
+        }
+
+        @Override
+        public boolean importData(TransferHandler.TransferSupport info) {
+            if (!canImport(info)) {
                 return false;
             }
 
-            if (index >= 0 && index < tasks.size() && sourceIndex >= 0 && sourceIndex < tasks.size() && index != sourceIndex) {
-                // Confirmação com JOptionPane
-                int resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir esta tarefa?", "Confirmação",
-                        JOptionPane.YES_NO_OPTION);
+            JList.DropLocation dl = (JList.DropLocation) info.getDropLocation();
+            int index = dl.getIndex();
 
-                if (resposta == JOptionPane.YES_OPTION) {
-                    // Remove a tarefa arrastada
-                    deleteTask();
-                    updateTaskList();
+            try {
+                String draggedIndex = (String) info.getTransferable().getTransferData(DataFlavor.stringFlavor);
+                int sourceIndex = Integer.parseInt(draggedIndex);
+
+                if (index == -1) {
+                    // Não foi solto sobre um item, portanto não faz nada
+                    return false;
                 }
-            }
 
-            return true;
-        } catch (Exception e) {
-            return false;
+                if (index >= 0 && index < tasks.size() && sourceIndex >= 0 && sourceIndex < tasks.size()
+                        && index != sourceIndex) {
+                    // Confirmação com JOptionPane
+                    int resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir esta tarefa?",
+                            "Confirmação",
+                            JOptionPane.YES_NO_OPTION);
+
+                    if (resposta == JOptionPane.YES_OPTION) {
+                        // Remove a tarefa arrastada
+                        deleteTask();
+                        updateTaskList();
+                    }
+                }
+
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
         }
     }
-}
 
-
-
-
-    
-
-    //METODO MARCAR COMO CONCLUIDO
+    // METODO MARCAR COMO CONCLUÍDO
     private void markTaskDone() {
         int selectedIndex = taskList.getSelectedIndex();
-        if (selectedIndex >= 0 && selectedIndex < tasks.size()) {
-            Task task = tasks.get(selectedIndex);
-            task.setDone(true);
-            updateTaskList();
+        try {
+            if (selectedIndex >= 0 && selectedIndex < tasks.size()) {
+                Task task = tasks.get(selectedIndex);
+                task.setDone(true);
+                updateTaskList();
+            } else {
+                JOptionPane.showMessageDialog(this, "Selecione uma tarefa para marcar como concluída.", "Erro",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Ocorreu um erro ao marcar a tarefa como concluída.", "Erro",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    //METODO FILTRAR
+    // METODO FILTRAR
     private void filterTasks() {
         String filter = (String) filterComboBox.getSelectedItem();
         listModel.clear();
         for (Task task : tasks) {
             if (filter.equals("Todas") || (filter.equals("Ativas") && !task.isDone())
-                    || (filter.equals("Concluídas") && task.isDone())
-                    || (filter.equals("Excluídas ") && task.isRemoved())) {
+                    || (filter.equals("Concluídas") && task.isDone())) {
                 listModel.addElement(task.getDescription());
             }
         }
     }
 
-    //METODO LIMPAR TODAS AS TAREFAS
+    // METODO LIMPAR CONCLUÍDAS
     private void clearCompletedTasks() {
-        List<Task> completedTasks = new ArrayList<>();
-        for (Task task : tasks) {
-            if (task.isDone()) {
-                completedTasks.add(task);
+        try {
+            List<Task> completedTasks = new ArrayList<>();
+            for (Task task : tasks) {
+                if (task.isDone()) {
+                    completedTasks.add(task);
+                }
             }
+            if (!completedTasks.isEmpty()) {
+                tasks.removeAll(completedTasks);
+                updateTaskList();
+            } else {
+                JOptionPane.showMessageDialog(this, "Não há tarefas concluídas para limpar.", "Aviso",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Ocorreu um erro ao limpar as tarefas concluídas.", "Erro",
+                    JOptionPane.ERROR_MESSAGE);
         }
-        tasks.removeAll(completedTasks);
-        updateTaskList();
     }
 
-    //METODO FECHAR JANELA
+    // METODO FECHAR JANELA
     private void windowClosingHandler(WindowEvent e) {
         int resposta = JOptionPane.showConfirmDialog(this, "Deseja realmente parar o programa?", "Confirmação",
                 JOptionPane.YES_NO_OPTION);
@@ -297,11 +351,15 @@ class TaskTransferHandler extends TransferHandler {
         });
     }
 
-    //METODO ATUALIZAR TAREFAS
+    // METODO ATUALIZAR TAREFAS
     private void updateTaskList() {
         listModel.clear();
         for (Task task : tasks) {
-            listModel.addElement(task.getDescription() + (task.isDone() ? " (Concluída)" : ""));
+            String description = task.getDescription();
+            if (task.isDone()) {
+                description += " (Concluída)";
+            }
+            listModel.addElement(description);
         }
     }
 
