@@ -303,6 +303,7 @@ public class TodoListApp extends JFrame {
             if (filter.equals("Todas") || (filter.equals("Ativas") && !task.isDone())
                     || (filter.equals("Concluídas") && task.isDone())) {
                 listModel.addElement(task.getDescription());
+                
             }
         }
     }
@@ -356,9 +357,6 @@ public class TodoListApp extends JFrame {
         listModel.clear();
         for (Task task : tasks) {
             String description = task.getDescription();
-            if (task.isDone()) {
-                description += " (Concluída)";
-            }
             listModel.addElement(description);
         }
     }
