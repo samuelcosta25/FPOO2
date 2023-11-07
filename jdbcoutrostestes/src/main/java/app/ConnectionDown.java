@@ -9,9 +9,9 @@ public class ConnectionDown {
         {
             try {
                 stmt.executeUpdate("drop table tbl_basica");
-        } catch (Exception ex){
-            //Ignorar todos os erros
+            } catch (Exception ex) {
+                // Ignorar todos os erros
+            }
         }
     }
-}
 }
