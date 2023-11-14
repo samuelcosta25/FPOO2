@@ -5,6 +5,7 @@
     ],
     "java.project.sourcePaths": [
         "JDBCTESTE/src",
-        "JDBCMavenTest1/src/main/java/app"
+        "JDBCMavenTest1/src/main/java/app",
+        "jdbcconnectionteste/src/main/java/app"
     ]
 }
