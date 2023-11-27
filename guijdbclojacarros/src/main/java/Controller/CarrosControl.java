@@ -39,15 +39,15 @@ public class CarrosControl {
     public void cadastrar(String marca, String modelo, String ano, String placa, String valor) {
         new CarrosDAO().cadastrar(marca, modelo, ano, placa, valor);
 
+        /*
+         * try {
+         * CarrosDAO().cadastrar(ano, valor);
+         * } catch (Exception e) {
+         * // TODO: handle exception
+         * }
+         * // Chama o método de cadastro no banco de dados
+         */
 
-/* 
-        try {
-            CarrosDAO().cadastrar(ano, valor);
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
-        // Chama o método de cadastro no banco de dados        */
-        
         atualizarTabela(); // Atualiza a tabela de exibição após o cadastro
     }
 

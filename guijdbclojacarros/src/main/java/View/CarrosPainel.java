@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -63,12 +64,13 @@ public class CarrosPainel extends JPanel {
         add(jSPane);
         tableModel = new DefaultTableModel(new Object[][] {},
                 new String[] { "Marca", "Modelo", "Ano", "Placa", "Valor" });
-        table = new JTable(tableModel){ 
-             @Override
+        table = new JTable(tableModel) {
+            @Override
             public boolean isCellEditable(int row, int column) {
-               //all cells false
-               return false;
-            }};
+                // all cells false
+                return false;
+            }
+        };
         jSPane.setViewportView(table);
 
         // criar o banco de dados
@@ -96,14 +98,35 @@ public class CarrosPainel extends JPanel {
 
         // tratamento para botão cadastrar
         cadastrar.addActionListener(e -> {
-            operacoes.cadastrar(carMarcaField.getText(), carModeloField.getText(),
-            carAnoField.getText(), carPlacaField.getText(),
-            carValorField.getText());
-            carMarcaField.setText("");
-            carModeloField.setText("");
-            carAnoField.setText("");
-            carPlacaField.setText("");
-            carValorField.setText("");
+            if (carMarcaField.getText().isEmpty() ||
+                    carModeloField.getText().isEmpty() ||
+                    carAnoField.getText().isEmpty() ||
+                    carPlacaField.getText().isEmpty() ||
+                    carValorField.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Erro: Preencha todos os campos.", "Erro",
+                        JOptionPane.ERROR_MESSAGE);
+
+            } else {
+                try {
+                    int ano = Integer.parseInt(carAnoField.getText());
+                    double valor = Double.parseDouble(carValorField.getText());
+
+                    // Se chegou até aqui, a conversão foi bem-sucedida
+                    operacoes.cadastrar(carMarcaField.getText(), carModeloField.getText(),
+                            carAnoField.getText(), carPlacaField.getText(),
+                            carValorField.getText());
+                    carMarcaField.setText("");
+                    carModeloField.setText("");
+                    carAnoField.setText("");
+                    carPlacaField.setText("");
+                    carValorField.setText("");
+
+                } catch (NumberFormatException ex) {
+                    // Tratar erro de conversão
+                    JOptionPane.showMessageDialog(this, "Erro: Ano e Valor devem ser números.", "Erro",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
         });
 
         // tratamento do botão editar
@@ -116,6 +139,7 @@ public class CarrosPainel extends JPanel {
             carAnoField.setText("");
             carPlacaField.setText("");
             carValorField.setText("");
+
         });
 
         // tratamento do botão apagar
