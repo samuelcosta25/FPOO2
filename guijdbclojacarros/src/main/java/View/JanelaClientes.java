@@ -21,14 +21,16 @@ public class JanelaClientes extends JPanel {
     private DefaultTableModel tableModel;
     private int linhaSelecionada = -1;
 
+    // Construtor da classe
     public JanelaClientes() {
         super();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         add(new JLabel("Clientes"));
-        
+
+        // Painel de entrada para os dados do cliente
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new GridLayout(4, 2));
-        
+
         inputPanel.add(new JLabel("Nome"));
         clintNome = new JTextField(20);
         inputPanel.add(clintNome);
@@ -43,21 +45,25 @@ public class JanelaClientes extends JPanel {
 
         add(inputPanel);
 
+        // Painel de botões para operações
         JPanel botoes = new JPanel();
         botoes.add(cadastrar = new JButton("Cadastrar"));
         botoes.add(editar = new JButton("Editar"));
         botoes.add(apagar = new JButton("Apagar"));
         add(botoes);
 
+        // Tabela para exibir dados dos clientes
         JScrollPane jSPane = new JScrollPane();
         add(jSPane);
         tableModel = new DefaultTableModel(new Object[][] {}, new String[] { "Nome", "Contato", "CPF" });
         table = new JTable(tableModel);
         jSPane.setViewportView(table);
 
+        // Cria a tabela no banco de dados e a atualiza
         new ClientesDAO().criaTabela();
         atualizar();
 
+        // Tratamento de eventos para clicar na tabela
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
@@ -70,8 +76,10 @@ public class JanelaClientes extends JPanel {
             }
         });
 
+        // Controlador para operações nos clientes
         ClientesControl operacoes = new ClientesControl(clientes, tableModel, table);
 
+        // Tratamento de eventos para o botão cadastrar
         cadastrar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -82,6 +90,7 @@ public class JanelaClientes extends JPanel {
             }
         });
 
+        // Tratamento de eventos para o botão editar
         editar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -92,6 +101,7 @@ public class JanelaClientes extends JPanel {
             }
         });
 
+        // Tratamento de eventos para o botão apagar
         apagar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -103,10 +113,12 @@ public class JanelaClientes extends JPanel {
         });
     }
 
+    // Método para atualizar a tabela com dados do banco de dados
     private void atualizar() {
-        tableModel.setRowCount(0);
+        tableModel.setRowCount(0); // Limpa todas as linhas existentes na tabela
         clientes = new ClientesDAO().listarTodos();
         for (Clientes cliente : clientes) {
+            // Adiciona os dados de cada cliente como uma nova linha na tabela Swing
             tableModel.addRow(new Object[] { cliente.getNome(), cliente.getContato(), cliente.getCPF() });
         }
     }
