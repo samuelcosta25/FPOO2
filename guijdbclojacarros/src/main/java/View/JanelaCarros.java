@@ -66,9 +66,11 @@ public class JanelaCarros extends JPanel {
         JScrollPane jSPane = new JScrollPane();
         add(jSPane);
         tableModel = new DefaultTableModel(new Object[][] {},
-                new String[] { "Marca", "Modelo", "Ano", "Placa", "Valor" });
+                new String[] { "Marca", "Modelo", "Ano", "Placa", "Valor" }){ public boolean isCellEditable(int rowIndex, int mColIndex){ return false; } };
         table = new JTable(tableModel);
         jSPane.setViewportView(table);
+
+       
         
     // Cria o banco de dados caso não tenha sido criado
     new CarrosDAO().criaTabela();
@@ -161,4 +163,7 @@ public class JanelaCarros extends JPanel {
         }
 
     }
+     public boolean isCellEditable(int row, int col) {  
+            return false;
+        }
 }

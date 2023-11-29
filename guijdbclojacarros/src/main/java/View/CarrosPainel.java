@@ -103,8 +103,8 @@ public class CarrosPainel extends JPanel {
                     carAnoField.getText().isEmpty() ||
                     carPlacaField.getText().isEmpty() ||
                     carValorField.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Erro: Preencha todos os campos.", "Erro",
-                        JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Erro: Preencha todos os campos.", "Erro",
+                    JOptionPane.ERROR_MESSAGE);
 
             } else {
                 try {
@@ -113,8 +113,8 @@ public class CarrosPainel extends JPanel {
 
                     // Se chegou até aqui, a conversão foi bem-sucedida
                     operacoes.cadastrar(carMarcaField.getText(), carModeloField.getText(),
-                            carAnoField.getText(), carPlacaField.getText(),
-                            carValorField.getText());
+                    carAnoField.getText(), carPlacaField.getText(),
+                    carValorField.getText());
                     carMarcaField.setText("");
                     carModeloField.setText("");
                     carAnoField.setText("");
@@ -124,16 +124,16 @@ public class CarrosPainel extends JPanel {
                 } catch (NumberFormatException ex) {
                     // Tratar erro de conversão
                     JOptionPane.showMessageDialog(this, "Erro: Ano e Valor devem ser números.", "Erro",
-                            JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
 
         // tratamento do botão editar
-        editar.addActionListener(e -> {
+            editar.addActionListener(e -> {
             operacoes.atualizar(carMarcaField.getText(), carModeloField.getText(),
-                    carAnoField.getText(), carPlacaField.getText(),
-                    carValorField.getText());
+            carAnoField.getText(), carPlacaField.getText(),
+            carValorField.getText());
             carMarcaField.setText("");
             carModeloField.setText("");
             carAnoField.setText("");
@@ -143,7 +143,7 @@ public class CarrosPainel extends JPanel {
         });
 
         // tratamento do botão apagar
-        apagar.addActionListener(e -> {
+            apagar.addActionListener(e -> {
             operacoes.apagar(carPlacaField.getText());
             carMarcaField.setText("");
             carModeloField.setText("");
