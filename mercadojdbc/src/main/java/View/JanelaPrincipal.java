@@ -1,44 +1,86 @@
 package View;
 
-import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
+import Controller.EstoqueControll;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class JanelaPrincipal extends JFrame {
-    private JTabbedPane jTabbedPane;
+    private CardLayout cardLayout;
+    private JPanel cards;
+    private EstoqueControll gerenciadorEstoque;
+    private JTabbedPane jTPane;
 
     public JanelaPrincipal() {
-        jTabbedPane = new JTabbedPane();
+        super("Janela Principal");
+            setSize(800, 600);
+        setLocationRelativeTo(null);
 
-        // Criação das instâncias dos painéis para cada funcionalidade
-        JanelaClientes janelaClientes = new JanelaClientes();
-        JanelaIdentificacaoCliente janelaIdentificacaoCliente = new JanelaIdentificacaoCliente(janelaClientes);
-        JanelaVendas janelaVendas = new JanelaVendas();
-        JanelaConclusaoCompra janelaConclusaoCompra = new JanelaConclusaoCompra();
-        JanelaNovoProduto janelaNovoProduto = new JanelaNovoProduto();
-        JanelaRelatorioVendas janelaRelatorioVendas = new JanelaRelatorioVendas();
-        
-        // Adicionando a nova instância JanelaEstoque
-        JanelaEstoque janelaEstoque = new JanelaEstoque();
+        // Inicializa o CardLayout
+        cardLayout = new CardLayout();
+        cards = new JPanel(cardLayout);
 
-        // Adição das abas ao JTabbedPane
-        jTabbedPane.add("Identificação Cliente", janelaIdentificacaoCliente);
-        jTabbedPane.add("Clientes", janelaClientes);
-        jTabbedPane.add("Registro de Vendas", janelaVendas);
-        jTabbedPane.add("Conclusão da Compra", janelaConclusaoCompra);
-        jTabbedPane.add("Cadastro de Novo Produto", janelaNovoProduto);
-        jTabbedPane.add("Relatório de Vendas", janelaRelatorioVendas);
-        
-        // Adicionando a nova aba JanelaEstoque
-        jTabbedPane.add("Estoque", janelaEstoque);
+        // Inicializa o EstoqueControll
+        gerenciadorEstoque = new EstoqueControll();
 
-        add(jTabbedPane);
+        // Cria instâncias das duas outras janelas
+        ConclusaoCompraPainel conclusaoCompraPainel = new ConclusaoCompraPainel(gerenciadorEstoque);
+        VendasPainel vendasPainel = new VendasPainel(gerenciadorEstoque, conclusaoCompraPainel);
 
-        setBounds(100, 100, 800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // Adiciona as duas janelas ao CardLayout
+        cards.add(conclusaoCompraPainel, "ConclusaoCompra");
+        cards.add(vendasPainel, "Vendas");
+
+        // Adiciona o CardLayout à janela principal
+        add(cards);
+
+        // Inicializa o JTabbedPane
+        jTPane = new JTabbedPane();
+        add(jTPane);
+
+        // Cria instâncias das outras janelas
+        ClientesPainel tab1 = new ClientesPainel(cardLayout, cards);
+        EstoquePainel tab4 = new EstoquePainel(gerenciadorEstoque);
+
+        // Adiciona as janelas ao JTabbedPane
+        jTPane.add("Tela de Clientes", tab1);
+        jTPane.add("Tela de Registro de venda", vendasPainel);
+        jTPane.add("Tela de Conclusão de Compras", conclusaoCompraPainel);
+        jTPane.add("Tela de Estoque", tab4);
+
+        // Define a janela principal para ser visível
+        setVisible(true);
     }
 
-    // Método para tornar a janela visível
+    // Método para obter o EstoqueControll
+    public EstoqueControll getGerenciadorEstoque() {
+        return gerenciadorEstoque;
+    }
+
+    // Método para iniciar a execução da janela
     public void run() {
-        this.setVisible(true);
+        // Implemente aqui qualquer lógica de inicialização necessária
+    }
+
+    // Método para adicionar a guia de estoque à janela principal
+    public void adicionarTabEstoque(EstoquePainel janelaEstoque) {
+        cards.add(janelaEstoque, "Estoque");
+    }
+
+    // Método para abrir a janela de estoque separadamente
+    public void abrirJanelaEstoque() {
+        EstoquePainel estoqueJanela = new EstoquePainel(gerenciadorEstoque);
+
+        JFrame estoqueFrame = new JFrame("Estoque");
+        estoqueFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        estoqueFrame.setSize(400, 300);
+        estoqueFrame.setLocationRelativeTo(null);
+        estoqueFrame.add(estoqueJanela);
+        estoqueFrame.setVisible(true);
+    }
+
+    // Método para definir o EstoqueControll
+    public void setGerenciadorEstoque(EstoqueControll gerenciadorEstoque) {
+        this.gerenciadorEstoque = gerenciadorEstoque;
     }
 }

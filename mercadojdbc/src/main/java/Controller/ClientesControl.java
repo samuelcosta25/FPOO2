@@ -1,111 +1,78 @@
 package Controller;
 
-import javax.swing.JTable;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-
-import DAO.ClientesDAO;
-import DAO.EstoqueDAO;
-import Model.Clientes;
-import Model.Estoque;
-
 import java.util.List;
 
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import Model.Clientes;
+
 public class ClientesControl {
-    private List<Clientes> clientes;
     private DefaultTableModel tableModel;
-    private JTable table;
+    private ClientesDAO clientesDAO;
 
-    public ClientesControl(List<Clientes> clientes, DefaultTableModel tableModel, JTable table) {
-        this.clientes = clientes;
+    // Adicionando um novo construtor que aceita um DefaultTableModel
+    public ClientesControl(DefaultTableModel tableModel) {
         this.tableModel = tableModel;
-        this.table = table;
-    }
 
-    // No método atualizarTabela(), ajuste o loop para usar EstoqueControl
-public void atualizarTabela() {
-    tableModel.setRowCount(0);
-    List<Estoque> produtos = new EstoqueDAO().listarTodos();
-    for (Estoque produto : produtos) {
-        tableModel.addRow(new Object[]{produto.getId(), produto.getNomeDoProduto(), produto.getPreco(),
-                produto.getQuantidade()});
-    }
-}
+        // Inicialize o tableModel se for nulo
+        if (this.tableModel == null) {
+            this.tableModel = new DefaultTableModel();
+            // Adicione as colunas necessárias ao tableModel, se necessário
+            this.tableModel.addColumn("Nome");
+            this.tableModel.addColumn("CPF");
+        }
 
-    // Método para cadastrar um novo cliente
-    public void cadastrar(String nome, String cpf) {
-        try {
-            if (validarDadosCliente(nome, cpf)) {
-                new ClientesDAO().cadastrar(nome, cpf);
-                atualizarTabela();
+        this.clientesDAO = new ClientesDAO();
+    }
+    private void atualizarTabela() {
+        if (tableModel != null) {
+            tableModel.setRowCount(0);
+            for (Clientes cliente : clientesDAO.listarTodos()) {
+                tableModel.addRow(new Object[]{cliente.getNome(), cliente.getCpf()});
             }
-        } catch (Exception e) {
-            exibirMensagemErro("Erro ao cadastrar: " + e.getMessage());
         }
     }
 
-    // Método para atualizar os dados de um cliente existente
-    public void atualizar(String nome, String cpf) {
-        try {
-            if (validarDadosCliente(nome, cpf)) {
-                new ClientesDAO().atualizar(nome, cpf);
+    public boolean cadastrarUsuario(String nome, String cpf) {
+        // Validar o CPF antes de cadastrar
+        if (clientesDAO.isCpfValido(cpf)) {
+            boolean cadastroSucesso = clientesDAO.cadastrarUsuario(nome, cpf);
+
+            if (cadastroSucesso) {
                 atualizarTabela();
             }
-        } catch (Exception e) {
-            exibirMensagemErro("Erro ao atualizar: " + e.getMessage());
-        }
-    }
 
-    // Método para apagar um cliente existente
-public void apagar(String cpf) {
-    try {
-        validarCPF(cpf);
-        new ClientesDAO().apagar(cpf);
-        atualizarTabela();
-    } catch (IllegalArgumentException e) {
-        exibirMensagemErro("Erro ao apagar: " + e.getMessage());
-    } catch (Exception e) {
-        exibirMensagemErro("Erro ao apagar: " + e.getMessage());
-    }
-}
-
-    // Método para validar os dados de um cliente
-    private boolean validarDadosCliente(String nome, String cpf) {
-        try {
-            validarCampoEmBranco(nome, "Nome");
-            validarCampoEmBranco(cpf, "CPF");
-            validarNome(nome);
-            validarCPF(cpf);
-            return true;
-        } catch (IllegalArgumentException e) {
-            exibirMensagemErro(e.getMessage());
+            return cadastroSucesso;
+        } else {
+            showMessage("CPF inválido. Não foi possível cadastrar o usuário.", "Erro de Cadastro");
             return false;
         }
     }
-
-    // Método para validar se um campo está em branco
-    private void validarCampoEmBranco(String valor, String campo) {
-        if (valor.trim().isEmpty()) {
-            throw new IllegalArgumentException(campo + " não pode estar em branco. Preencha e tente novamente.");
+    public Clientes obterClientePorCPF(String cpf) {
+        try {
+            return clientesDAO.obterClientePorCpf(cpf);
+        } catch (RuntimeException e) {
+            showMessage("Erro ao obter cliente por CPF: " + e.getMessage(), "Erro");
+            return null;
         }
     }
 
-    // Método para validar o formato do nome
-    private void validarNome(String nome) {
-        if (!nome.matches("^[a-zA-Z\\s]+$")) {
-            throw new IllegalArgumentException("Nome inválido. Verifique e tente novamente.");
-        }
+    public void atualizarCliente(String nome, String cpf) {
+        clientesDAO.atualizar(nome, cpf);
+        atualizarTabela();
     }
 
-    // Método para validar o formato do CPF
-private void validarCPF(String cpf) {
-    if (!cpf.matches("\\d{11}")) {
-        throw new IllegalArgumentException("CPF inválido. Deve conter exatamente 11 dígitos numéricos.");
+    public void apagarCliente(String cpf) {
+        clientesDAO.apagar(cpf);
+        atualizarTabela();
     }
-}
 
-    // Método para exibir mensagens de erro
-    private void exibirMensagemErro(String mensagem) {
-        JOptionPane.showMessageDialog(null, mensagem, "Erro", JOptionPane.ERROR_MESSAGE);
+    private void showMessage(String message) {
+        JOptionPane.showMessageDialog(null, message);
+    }
+
+    private void showMessage(String message, String title) {
+        JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
     }
 }

@@ -1,75 +1,36 @@
 package Model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Estoque {
-    // Atributos
-    int id;
-    String nomeDoProduto;
-    String preco;
-    int precoCompra;
-    String quantidade;
-    int quantidadeCompra;
+    private List<Produto> produtos;
 
-    // Construtor
-    public Estoque(int id, String nomeDoProduto, String preco, String quantidade) {
-        this.id = id;
-        this.nomeDoProduto = nomeDoProduto;
-        this.preco = preco;
-        this.quantidade = quantidade;
+    public Estoque() {
+        produtos = new ArrayList<>();
     }
 
-    public Estoque(String nomeDoProduto, int precoCompra, int quantidadeCompra) {
-        this.nomeDoProduto = nomeDoProduto;
-        this.precoCompra = precoCompra;
-        this.quantidadeCompra = quantidadeCompra;
+    public void adicionarProduto(Produto produto) {
+        produtos.add(produto);
     }
 
-    // Getters and Setters
-    public String getNomeDoProduto() {
-        return nomeDoProduto;
+    public void removerProduto(Produto produto) {
+        produtos.remove(produto);
     }
 
-    public void setNomeDoProduto(String nomeDoProduto) {
-        this.nomeDoProduto = nomeDoProduto;
+    public List<Produto> listarProdutos() {
+        return produtos;
     }
 
-    public String getPreco() {
-        return preco;
+    public List<Produto> listarProdutosDoBanco() {
+        return null;
     }
 
-    public void setPreco(String preco) {
-        this.preco = preco;
+    public Produto get(String codigoBarras) {
+        return null;
     }
 
-    public String getQuantidade() {
-        return quantidade;
+    public Produto obterProdutoPorCodigoBarras(String codigoBarras) {
+        return null;
     }
-
-    public void setQuantidade(String quantidade) {
-        this.quantidade = quantidade;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getQuantidadeCompra() {
-        return quantidadeCompra;
-    }
-
-    public void setQuantidadeCompra(int quantidadeCompra) {
-        this.quantidadeCompra = quantidadeCompra;
-    }
-
-    public int getPrecoCompra() {
-        return precoCompra;
-    }
-
-    public void setPrecoCompra(int precoCompra) {
-        this.precoCompra = precoCompra;
-    }
-
 }
