@@ -1,31 +1,32 @@
 package Model;
 
-
-
 public class Clientes {
-    private String nome;
-         private String cpf;
-    public Clientes(String nome,  String cpf) {
-        this.nome = nome;
-    
-        this.cpf = cpf;
+
+    private String Nome;
+    private String CPF;
+
+    public Clientes(String nome, String cpf) {
+        Nome = nome;
+        CPF = cpf;
     }
+
     public String getNome() {
-        return nome;
+        return Nome;
     }
+
     public void setNome(String nome) {
-        this.nome = nome;
+        Nome = nome;
     }
-   
-    
-    public String getCpf() {
-        return cpf;
-    }
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-  
 
+    public String getCPF() {
+        return CPF;
+    }
 
-     
+    public void setCPF(String cpf) {
+        CPF = cpf;
+    }
+
+    public Object getContato() {
+        return null;
+    }
 }
